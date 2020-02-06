@@ -45,6 +45,7 @@ public:
             T * new_data = new T[n];
             for(size_t i = 0; i < num_entries; i++)
                 new_data[i] = data[i];
+	    delete[] data;
             data = new_data;
             capacity = n;
         }
@@ -52,8 +53,9 @@ public:
 
     void append(const T& item)
     {
+	T temp = item;
         resize(num_entries + 1);
-        data[num_entries] = item;
+        data[num_entries] = temp;
         num_entries++;
     }
 
