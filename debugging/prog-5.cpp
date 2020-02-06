@@ -28,8 +28,11 @@ struct list
 
     ~list()
     {
-        for(node * n = head; n; n = n->next)
-            delete n;
+	for(node* n = head; n; n=n)   {
+		node* temp = n->next;
+		delete n;
+		n = temp;
+	}
     }
 
     size_t size() const
@@ -53,17 +56,22 @@ struct list
     node * add_after(node* n, const std::string& str)
     {
         node * a = new node(n, n->next, str);
-        n->next->prev = a;
         n->next = a;
         return a;
     }
 
     void remove(node* n)
     {
-        n->prev->next = n->next;
-        n->next->prev = n->prev;
-        delete n;
-    }
+	if (n == head) {
+	    head = n->next;
+	    head->prev = nullptr;
+	}
+	else {
+            n->prev->next = n->next;
+            n->next->prev = n->prev;
+	}
+	delete n;
+   }
 
     void print()
     {
